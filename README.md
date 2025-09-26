@@ -1,5 +1,9 @@
 # RefinEA: Entity Alignment using LLM Reasoning
 
+[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/paquitopg/Refine-EA)](https://github.com/paquitopg/Refine-EA)
+
 RefinEA is a modular system for entity alignment between knowledge graphs using Large Language Model (LLM) reasoning. The system takes entity attributes from two knowledge graphs and uses LLM-based reasoning to determine the best matches between entities.
 
 ## 🚀 Quick Start
