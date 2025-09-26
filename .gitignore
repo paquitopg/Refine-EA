@@ -1,0 +1,17 @@
+.venv/
+.env
+.env.*
+singular-backup-*.json
+*.json
+!package*.json
+!poetry.lock
+__pycache__/
+data/
+outputs/
+logs/
+dist/
+__pycache__
+examples/
+poetry.lock
+launchers/base_launcher/.env
+launchers/server_launcher/.env

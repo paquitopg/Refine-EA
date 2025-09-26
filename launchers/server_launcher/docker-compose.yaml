@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  server_refine_ea_service:
+    image: vllm/vllm-openai:latest
+    container_name: ${SERVER_REFINE_EA_CONTAINER_NAME}
+    shm_size: '64gb'
+    ports:
+      - "1444:8000"
+    runtime: nvidia
+    cpuset: ${CPU_IDS}
+    deploy:
+      resources:
+        limits:
+          memory: ${DOCKER_RAM}
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["${DOCKER_GPU}"]
+              capabilities: [gpu]
+
+    environment:
+      HF_HOME: "/workspace/hf_cache"
+      HF_TOKEN: ${HF_TOKEN}
+      MODEL_NAME: ${MODEL_NAME}
+      VLLM_ARGS: ${VLLM_ARGS}
+
+    volumes:
+      - /raid/ml-data/hf_cache:/workspace/hf_cache
+    entrypoint: python3
+    command: -m vllm.entrypoints.openai.api_server --port=8000 --host=0.0.0.0 --model ${MODEL_NAME} ${VLLM_ARGS}

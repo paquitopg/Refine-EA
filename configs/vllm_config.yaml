@@ -1,0 +1,116 @@
+# vLLM Configuration for Refine-EA
+# This file contains all configurable parameters for vLLM HTTP interactions
+
+# Model Configuration
+model:
+  # Model name to use (should match the model loaded in the vLLM server)
+  # This should match the MODEL_NAME in your docker-compose or sbatch setup
+  name: "Qwen/Qwen2.5-7B-Instruct"
+  # Model type (not used for HTTP interface, but kept for compatibility)
+  type: "auto"
+
+# API Configuration
+api:
+  # vLLM server API URL - OpenAI-compatible endpoint
+  url: "http://172.16.40.54:1444/v1/chat/completions"
+  # Request timeout in seconds
+  timeout: 30
+  # Maximum number of retries for failed requests
+  max_retries: 3
+  # Delay between retries in seconds
+  retry_delay: 1
+
+# Generation Parameters
+generation:
+  # Maximum number of new tokens to generate
+  max_new_tokens: 2048
+  # Temperature for sampling (higher = more random)
+  temperature: 0.3
+  # Top-p sampling parameter
+  top_p: 0.9
+  # Top-k sampling parameter
+  top_k: 50
+  # Whether to use nucleus sampling
+  do_sample: true
+  # Repetition penalty
+  repetition_penalty: 1.1
+  # Stop sequences
+  stop: []
+
+# Prompt Templates
+prompts:
+  # Template for entity matching task
+  entity_matching: |
+    You are an AI assistant that helps match entities. Given an entity and a list of candidates, determine the best match.
+
+    Entity to match:
+    {entity_description}
+    
+    Candidate entities:
+    {candidate_entities}
+    
+    Please analyze the entity and candidates, then provide:
+    1. The index of the best matching candidate (0, 1, 2, etc.) OR "NO_MATCH" if none of the candidates are suitable matches
+    2. A confidence score between 0.0 and 1.0 (use 0.0 if NO_MATCH)
+    3. A brief explanation of your reasoning
+    
+    Response:
+    Best match: [candidate_index or NO_MATCH]
+    Confidence: [confidence_score]
+    Reasoning: [explanation]
+
+  # Template for entity comparison
+  entity_comparison: |
+    You are an AI assistant that compares entities. Determine if these entities represent the same real-world entity.
+
+    Entity 1:
+    {entity1_description}
+    
+    Entity 2:
+    {entity2_description}
+    
+    Please analyze the entities and provide:
+    1. A similarity score between 0.0 and 1.0
+    2. A brief explanation of your reasoning
+    
+    Response:
+    Similarity: [similarity_score]
+    Reasoning: [explanation]
+
+# Scoring Configuration
+scoring:
+  # Minimum confidence threshold for considering a match
+  min_confidence: 0.5
+  # Confidence threshold below which to treat as "no match"
+  no_match_threshold: 0.3
+  # Whether to normalize scores
+  normalize_scores: true
+  # Scoring method (confidence, similarity, both)
+  method: "confidence"
+
+# Output Configuration
+output:
+  # Whether to include reasoning in output
+  include_reasoning: true
+  # Whether to include confidence scores
+  include_confidence: true
+  # Output format (json, text, structured)
+  format: "json"
+  # Whether to save intermediate results
+  save_intermediate: false
+
+# Performance Configuration
+performance:
+  # Batch size for processing multiple entities
+  batch_size: 1
+  # Whether to use caching for model outputs
+  use_cache: true
+
+# Logging Configuration
+logging:
+  # Log level (DEBUG, INFO, WARNING, ERROR)
+  level: "INFO"
+  # Whether to log model inputs/outputs
+  log_io: true
+  # Whether to log performance metrics
+  log_performance: true 

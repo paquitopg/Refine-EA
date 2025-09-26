@@ -1,0 +1,9 @@
+# VLLM Server Configuration
+SERVER_REFINE_EA_CONTAINER_NAME=vllm-server-${USER}
+# Model Configuration
+MODEL_NAME="Qwen/Qwen2.5-7B-Instruct"
+VLLM_ARGS="--gpu-memory-utilization 0.98 --enforce-eager"
+# Network Configuration
+DGX_OPEN_PORT=1444
+# Authentication
+HF_TOKEN=""

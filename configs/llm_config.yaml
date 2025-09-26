@@ -1,0 +1,126 @@
+# LLM Configuration for Refine-EA
+# This file contains all configurable parameters for LLM interactions
+
+# Model Configuration
+model:
+  # HuggingFace model name or path
+  # name: "meta-llama/Llama-2-7b-chat-hf"  # Better for reasoning tasks
+  name: "Qwen/Qwen2.5-7B-Instruct"
+  # name: "meta-llama/Llama-3.2-3B-Instruct"
+  # Model type for loading (auto, causal, seq2seq, etc.)
+  type: "auto"
+  # Device to run on (auto, cpu, cuda, mps)
+  device: "auto"
+  # Whether to use 8-bit quantization for memory efficiency
+  load_in_8bit: false
+  # Whether to use 4-bit quantization
+  load_in_4bit: false
+  # Trust remote code when loading models
+  trust_remote_code: true
+
+# Generation Parameters
+generation:
+  # Maximum length of generated text
+  max_length: 2048
+  # Maximum number of new tokens to generate
+  max_new_tokens: 2048
+  # Temperature for sampling (higher = more random)
+  temperature: 0.3
+  # Top-p sampling parameter
+  top_p: 0.9
+  # Top-k sampling parameter
+  top_k: 50
+  # Whether to use nucleus sampling
+  do_sample: true
+  # Number of beams for beam search
+  num_beams: 1
+  # Whether to use early stopping
+  early_stopping: true
+  # Repetition penalty
+  repetition_penalty: 1.1
+  # Length penalty for beam search
+  length_penalty: 1.0
+  # Whether to pad to max length
+  pad_to_max_length: false
+
+# Prompt Templates
+prompts:
+  # Template for entity matching task
+  entity_matching: |
+    You are an AI assistant that helps match entities. Given an entity and a list of candidates, determine the best match.
+
+    Entity to match:
+    {entity_description}
+    
+    Candidate entities:
+    {candidate_entities}
+    
+    Please analyze the entity and candidates, then provide:
+    1. The index of the best matching candidate (0, 1, 2, etc.) OR "NO_MATCH" if none of the candidates are suitable matches
+    2. A confidence score between 0.0 and 1.0 (use 0.0 if NO_MATCH)
+    3. A brief explanation of your reasoning
+    
+    Response:
+    Best match: [candidate_index or NO_MATCH]
+    Confidence: [confidence_score]
+    Reasoning: [explanation]
+
+  # Template for entity comparison
+  entity_comparison: |
+    You are an AI assistant that compares entities. Determine if these entities represent the same real-world entity.
+
+    Entity 1:
+    {entity1_description}
+    
+    Entity 2:
+    {entity2_description}
+    
+    Please analyze the entities and provide:
+    1. A similarity score between 0.0 and 1.0
+    2. A brief explanation of your reasoning
+    
+    Response:
+    Similarity: [similarity_score]
+    Reasoning: [explanation]
+
+# Scoring Configuration
+scoring:
+  # Minimum confidence threshold for considering a match
+  min_confidence: 0.5
+  # Confidence threshold below which to treat as "no match"
+  no_match_threshold: 0.3
+  # Whether to normalize scores
+  normalize_scores: true
+  # Scoring method (confidence, similarity, both)
+  method: "confidence"
+
+# Output Configuration
+output:
+  # Whether to include reasoning in output
+  include_reasoning: true
+  # Whether to include confidence scores
+  include_confidence: true
+  # Output format (json, text, structured)
+  format: "json"
+  # Whether to save intermediate results
+  save_intermediate: false
+
+# Performance Configuration
+performance:
+  # Batch size for processing multiple entities
+  batch_size: 1
+  # Whether to use caching for model outputs
+  use_cache: true
+  # Maximum memory usage (in GB)
+  max_memory: null
+  # Whether to use gradient checkpointing
+  gradient_checkpointing: false
+
+# Logging Configuration
+logging:
+  # Log level (DEBUG, INFO, WARNING, ERROR)
+  level: "DEBUG"
+  # Whether to log model inputs/outputs
+  log_io: true
+  # Whether to log performance metrics
+  log_performance: true 

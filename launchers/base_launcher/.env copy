@@ -1,0 +1,22 @@
+# Experiment parameters
+DATASET=airelle
+LLM_CONFIG=configs/vllm_config.yaml
+NUM_CANDIDATES=10
+MAX_ENTITIES=50
+OUTPUT_DIR=outputs
+
+# Hardware
+CUDA=0-8
+CPU_IDS=0-7
+
+LOG_LEVEL=INFO
+
+# Docker settings
+USER_ID=1015
+USER_GID=1016
+DOCKER_GID=999
+REFINE_EA_CONTAINER_NAME=refine_ea_${USER}
+
+# Authentication
+HF_TOKEN=""
+HF_HOME=/tmp/hf_cache

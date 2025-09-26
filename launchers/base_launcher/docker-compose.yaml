@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  refine_ea_service:
+    image:  sinequa:5000/refine_ea:0.1.1
+    container_name: ${REFINE_EA_CONTAINER_NAME}
+
+    shm_size: '64gb'
+    ports:
+      - "${DGX_OPEN_PORT}:5000"
+    cpuset: ${CPU_IDS}
+    deploy:
+      resources:
+        limits:
+          memory: ${DOCKER_RAM}
+
+    environment:
+      HF_HOME: "/tmp/hf_cache"
+      HF_TOKEN: "${HF_TOKEN}"
+      DATASET: "${DATASET}"
+      LLM_CONFIG: "${LLM_CONFIG}"
+      NUM_CANDIDATES: "${NUM_CANDIDATES}"
+      OUTPUT_DIR: "${OUTPUT_DIR}"
+      MAX_ENTITIES: "${MAX_ENTITIES}"
+      LOG_LEVEL: "${LOG_LEVEL}"
+
+    user: "${USER_UID}:${USER_GID}"
+
+    group_add:
+      - "${DOCKER_GID}"
+
+    working_dir: /workspace
+
+    volumes:
+      - /tmp/hf_cache_${USER_UID}:/tmp/hf_cache
+      - /raid/ml-data/paco/refine_ea_data/${DATASET}:/workspace/data/${DATASET}
+      - /home/paco/projects/Refine-EA/outputs/${DATASET}:/workspace/outputs/${DATASET}
+      - /home/paco/projects/Refine-EA/${LLM_CONFIG}:/workspace/${LLM_CONFIG}
+
+    command:
+      [
+        "python", "-m", "refine_ea.main_refine_ea",
+        "--data_dir", "/workspace/data/${DATASET}",
+        "--llm_config", "/workspace/${LLM_CONFIG}",
+        "--num_candidates", "${NUM_CANDIDATES}",
+        "--output_dir", "/workspace/outputs/${DATASET}",
+        "--max_entities", "${MAX_ENTITIES}",
+        "--log_level", "${LOG_LEVEL}"
+      ]
