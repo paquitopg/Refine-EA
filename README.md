@@ -369,14 +369,7 @@ refinEA/
 - All paths are configurable via command-line arguments
 - The system is designed for cluster deployment
 - Modular architecture for easy extension
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new functionality
-4. Submit a pull request
-
+  
 ## 📄 License
 
 This project is licensed under the MIT License.
